@@ -2,12 +2,12 @@ package com.alouache;
 
 import java.util.Scanner;
 
-public class Commands extends Thread {
+public class CommandManager extends Thread {
 
 	private AntiFreeze antiFreeze;
 	private Scanner sc;
 
-	public Commands(AntiFreeze antiFreeze) {
+	public CommandManager(AntiFreeze antiFreeze) {
 		this.antiFreeze = antiFreeze;
 		this.sc = new Scanner(System.in);
 	}
