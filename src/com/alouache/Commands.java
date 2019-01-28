@@ -23,23 +23,57 @@ public class Commands extends Thread {
 	}
 
 	public void interpretCommand(String cmd) {
-		switch (cmd) {
+		String args[] = cmd.split(" ");
+
+		switch (args[0]) {
 			case "start":
-				System.out.println("Starting AntiFreeze system...");
 				this.antiFreeze.setState(true);
 				System.out.println("AntiFreeze started !");
 				break;
 
 			case "stop":
-				System.out.println("Stopping AntiFreeze system...");
 				this.antiFreeze.setState(false);
 				System.out.println("AntiFreeze stopped !");
 				break;
+
+			case "step":
+				if (args.length > 1) {
+					try {
+						int step = Integer.parseInt(args[1]);
+						this.antiFreeze.setStep(step);
+						System.out.println("=> Step set to : " + step + " px");
+					} catch (Exception e) {
+						System.out.println("ERROR : " + args[1] + " is not a number");
+					}
+				} else {
+					System.out.println("USAGE : step <nb pixels>");
+				}
+				break;
+
+			case "interval":
+				if (args.length > 1) {
+					try {
+						int interval = Integer.parseInt(args[1]);
+						this.antiFreeze.setInterval(interval);
+						System.out.println("=> Interval set to : " + interval + " px");
+					} catch (Exception e) {
+						System.out.println("ERROR : " + args[1] + " is not a number");
+					}
+				} else {
+					System.out.println("USAGE : interval <time in ms>");
+				}
+				break;
+
 
 			case "quit":
 				System.out.println("Exiting...");
 				System.exit(0);
 				break;
+
+			default:
+				System.out.println("Unknown command");
+				break;
+
 		}
 	}
 }
