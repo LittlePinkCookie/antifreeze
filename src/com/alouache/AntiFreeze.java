@@ -2,7 +2,12 @@ package com.alouache;
 
 import java.awt.*;
 
-public class AntiFreeze {
+/**
+ * AntiFreeze system is a software moving infinitely up and down the cursor to avoid video freezes caused by flash
+ * issues on Linux
+ */
+
+public class AntiFreeze extends Thread {
 
 	private Robot r;
 	private int direction;
@@ -10,6 +15,7 @@ public class AntiFreeze {
 
 	public AntiFreeze() {
 		this.direction = 50;
+		this.run = false;
 
 		try {
 			this.r = new Robot();
@@ -18,20 +24,37 @@ public class AntiFreeze {
 		}
 	}
 
-	public void start() {
-		while(true) {
-			int xCoord = MouseInfo.getPointerInfo().getLocation().x;
-			int yCoord = MouseInfo.getPointerInfo().getLocation().y;
+	/**
+	 * Move cursor up and down
+	 */
+	public void run() {
+		while (true) {
+			if (this.run) {
+				System.out.println("lol");
+				int xCoord = MouseInfo.getPointerInfo().getLocation().x;
+				int yCoord = MouseInfo.getPointerInfo().getLocation().y;
 
-			this.r.mouseMove(xCoord, yCoord + this.direction);
-			this.direction = -this.direction;
+				this.r.mouseMove(xCoord, yCoord + this.direction);
+				this.direction = -this.direction;
 
-			try { Thread.sleep(1000); } catch(Exception e) {}
+				try {
+					Thread.sleep(1000);
+				} catch (Exception e) {
+				}
+			}
 		}
 	}
 
-	public static void main(String[] args) {
-		System.out.println("Starting anti-freeze....");
-		new AntiFreeze().start();
+	/**
+	 * Start and stop the Anti Freeze system
+	 *
+	 * @param b true to start
+	 */
+	public void setState(boolean b) {
+		this.run = b;
+	}
+
+	public boolean isRunning() {
+		return this.run;
 	}
 }
